@@ -682,7 +682,7 @@
   }
   .feature-front-title em {
     font-style: italic;
-    color: var(--accent-soft);
+    color: #fff;
     font-weight: 700;
     text-transform: none;
   }
@@ -694,16 +694,20 @@
     font-size: 11px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    background: rgba(26,18,8,0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.45);
     padding: 7px 14px;
     border-radius: 999px;
     width: fit-content;
-    transition: color 0.3s, border-color 0.3s;
+    transition: color 0.3s, border-color 0.3s, background 0.3s;
   }
   .feature-card:not(.flipped):hover .feature-flip-hint {
-    color: var(--accent-soft);
-    border-color: var(--accent-soft);
+    color: #fff;
+    background: rgba(251,111,24,0.75);
+    border-color: transparent;
   }
   .feature-flip-hint-icon {
     font-size: 14px;
