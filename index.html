@@ -888,9 +888,15 @@
 
   .flavor-detail-grid {
     display: grid;
-    grid-template-columns: minmax(380px, 0.85fr) 1.1fr;
-    gap: 80px;
+    grid-template-columns: minmax(320px, 0.85fr) 1.1fr;
+    column-gap: 64px;
     align-items: start;
+  }
+  /* Flex wrapper — image+nav always exactly 16px apart, never affected by content length */
+  .flavor-image-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
   .flavor-detail-image {
     position: relative;
@@ -1013,6 +1019,66 @@
     font-weight: 700;
     color: var(--ink);
   }
+
+  /* ----- Flavor detail navigation (prev/next + dots) ----- */
+  /* Remove old grid-area assignments — layout now handled by flavor-image-col flex */
+
+  .flavor-detail-nav {
+    position: static;  /* override global nav { position: fixed } from site navbar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    top: auto; left: auto; right: auto; /* reset fixed coords */
+    width: auto; height: auto; padding: 0;
+  }
+  .flavor-nav-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.3s;
+    flex-shrink: 0;
+  }
+  .flavor-nav-btn:hover {
+    background: var(--tint, var(--accent));
+    color: #fff;
+    border-color: var(--tint, var(--accent));
+  }
+  .flavor-nav-btn:active { transform: scale(0.92); }
+  .flavor-nav-dots {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+  }
+  .flavor-nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink-soft);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s, transform 0.3s, width 0.3s;
+    flex-shrink: 0;
+  }
+  .flavor-nav-dot:hover {
+    border-color: var(--tint, var(--accent));
+    transform: scale(1.2);
+  }
+  .flavor-nav-dot.active {
+    background: var(--tint, var(--accent));
+    border-color: var(--tint, var(--accent));
+    width: 22px;
+    border-radius: 4px;
+  }
   .flavor-row {
     display: grid;
     grid-template-columns: 110px 1fr 1fr 120px;
@@ -1088,10 +1154,10 @@
   .flavor-preview {
     position: fixed;
     pointer-events: none;
-    width: 280px;
-    height: 420px;
-    margin-left: -140px;
-    margin-top: -210px;
+    width: 196px;
+    height: 294px;
+    margin-left: -98px;
+    margin-top: -147px;
     top: 0;
     left: 0;
     z-index: 200;
@@ -1125,7 +1191,7 @@
   .founder-story-inner { max-width: 1280px; margin: 0 auto; }
   .founder-grid {
     display: grid;
-    grid-template-columns: minmax(360px, 0.92fr) 1.15fr;
+    grid-template-columns: minmax(270px, 0.69fr) 1.15fr;
     gap: 64px;
     align-items: start;
     margin-top: 51px;
@@ -1402,7 +1468,9 @@
   .reveal-slide.in { animation: slideRight 1s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
   .reveal-scale.in { animation: scaleUp 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
-  /* ----- Mobile ----- */
+  /* Hidden on desktop, shown only via mobile/tablet media queries below */
+  .cans-static { display: none; }
+
   /* ============================================================
      TABLET  481px – 1024px
      ============================================================ */
@@ -1439,13 +1507,20 @@
       height: auto;
       display: block;
     }
-    /* Label chips */
+    /* Label chips — pill card with blur backdrop */
     .cans-label {
       position: absolute;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      max-width: 44%;
+      gap: 3px;
+      max-width: 42%;
+      background: rgba(253,239,228,0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding: 10px 14px;
+      border: 1px solid rgba(253,239,228,0.5);
+      box-shadow: 0 4px 16px rgba(26,18,8,0.12);
     }
     .cans-label-num {
       font-family: 'JetBrains Mono', monospace;
@@ -1457,12 +1532,12 @@
     }
     .cans-label-title {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(14px, 3.2vw, 22px);
+      font-size: clamp(13px, 3vw, 20px);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: -0.02em;
       color: var(--ink);
-      line-height: 1;
+      line-height: 1.05;
     }
     .cans-label-title em {
       font-style: italic;
@@ -1472,11 +1547,16 @@
     }
     .cans-label-stat {
       font-family: 'Exo 2', sans-serif;
-      font-size: clamp(20px, 5vw, 36px);
+      font-size: clamp(22px, 5.5vw, 38px);
       font-weight: 700;
       color: var(--accent);
       letter-spacing: -0.03em;
       line-height: 1;
+      transition: color 0.4s;
+    }
+    .cans-label-stat.counting {
+      color: var(--ink);
+      text-shadow: 0 0 18px rgba(251,111,24,0.25);
     }
     .cans-label-stat-text {
       font-family: 'JetBrains Mono', monospace;
@@ -1486,16 +1566,19 @@
       color: var(--ink-soft);
       line-height: 1;
     }
-    /* Position each label */
-    .cans-label-1 { top: 3%; left: 2%; }
-    .cans-label-2 { top: 3%; right: 2%; text-align: right; align-items: flex-end; }
+    /* Image zones:
+       top 0–38% = fruit explosions (labels 1 & 2 go here)
+       38–75%    = the 4 cans (no labels here)
+       75–100%   = teal/pedestal area (label 3 goes here) */
+    .cans-label-1 { top: 4%; left: 3%; }
+    .cans-label-2 { top: 4%; right: 3%; text-align: right; align-items: flex-end; }
     .cans-label-3 {
-      bottom: 3%;
+      bottom: 5%;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
       align-items: center;
-      max-width: 60%;
+      max-width: 55%;
     }
     .annotation {
       bottom: 4vh;
@@ -1513,7 +1596,9 @@
     .flavors { padding: 90px 32px; }
     .flavor-row { grid-template-columns: 80px 1fr 1fr 80px; gap: 20px; }
     .flavor-name { font-size: clamp(22px, 2.5vw, 36px); }
-    .flavor-detail-grid { gap: 48px; }
+    .flavor-detail-grid { column-gap: 48px; }
+    .flavor-image-col { gap: 16px; }
+    .flavor-detail-image { aspect-ratio: 4 / 5; overflow: hidden; }
 
     /* Why ZZAI */
     .features { padding: 90px 32px; }
@@ -1609,8 +1694,9 @@
     .flavor-name { font-size: clamp(20px, 6vw, 32px); }
     .flavor-arrow { font-size: 16px; }
     /* Flavor detail panel mobile */
-    .flavor-detail-grid { grid-template-columns: 1fr; gap: 28px; }
-    .flavor-detail-image { max-width: 100%; aspect-ratio: 16 / 9; }
+    .flavor-detail-grid { grid-template-columns: 1fr; }
+    .flavor-image-col { gap: 16px; }
+    .flavor-detail-image { max-width: 100%; aspect-ratio: 4 / 5; overflow: hidden; }
     .flavor-detail-title { font-size: clamp(28px, 8vw, 44px); margin-bottom: 24px; }
     .flavor-detail-body p { font-size: 14px; line-height: 1.65; margin-bottom: 16px; }
     .flavor-detail-notes { font-size: clamp(16px, 4.5vw, 22px); margin-top: 28px; padding-top: 20px; }
@@ -1660,11 +1746,6 @@
     .footer-col h4 { font-size: 10px; }
     .footer-col a { font-size: 14px; }
     .footer-bottom { flex-direction: column; gap: 6px; font-size: 10px; padding-top: 20px; margin-top: 48px; }
-  }
-
-  /* ----- Static cans section (mobile/tablet only) ----- */
-  .cans-static {
-    display: none; /* hidden on desktop */
   }
 
   /* ============================================================
@@ -1803,13 +1884,13 @@
 
 <!-- Static cans image — shown only on mobile/tablet instead of scroll animation -->
 <section class="cans-static">
-  <img class="cans-img" src="tablet%20and%20mobile.png" alt="ZZAI — four sparkling drinks" />
+  <img class="cans-img" src="cans-hero.png" alt="ZZAI — four sparkling drinks" />
 
   <!-- Label 1: top-left — Real cane sugar -->
   <div class="cans-label cans-label-1">
     <span class="cans-label-num">01 — Crafted</span>
     <span class="cans-label-title">Real <em>cane</em> sugar</span>
-    <span class="cans-label-stat">100%</span>
+    <span class="cans-label-stat" data-count="100" data-suffix="%">0%</span>
     <span class="cans-label-stat-text">Pure cane</span>
   </div>
 
@@ -1817,7 +1898,7 @@
   <div class="cans-label cans-label-2">
     <span class="cans-label-num">02 — Sourced</span>
     <span class="cans-label-title">Iconic <em>flavors</em></span>
-    <span class="cans-label-stat">4</span>
+    <span class="cans-label-stat" data-count="4" data-suffix="">0</span>
     <span class="cans-label-stat-text">Cultural roots</span>
   </div>
 
@@ -1825,7 +1906,7 @@
   <div class="cans-label cans-label-3">
     <span class="cans-label-num">03 — Finished</span>
     <span class="cans-label-title">Sparkling, <em>premium</em></span>
-    <span class="cans-label-stat">0</span>
+    <span class="cans-label-stat" data-count="0" data-from="100" data-suffix="">100</span>
     <span class="cans-label-stat-text">Artificial anything</span>
   </div>
 </section>
@@ -1908,9 +1989,21 @@
         <span>Back to drinks</span>
       </button>
       <div class="flavor-detail-grid">
-        <div class="flavor-detail-image">
+        <div class="flavor-image-col">
+          <div class="flavor-detail-image">
           <img src="Tamtam.avif" alt="TamTam — Sparkling Mango + Tamarind" />
           <div class="flavor-detail-image-tag">TamTam · Mango + Tamarind</div>
+        </div>
+          <nav class="flavor-detail-nav" aria-label="Navigate drinks">
+          <button class="flavor-nav-btn" data-dir="prev" aria-label="Previous drink">←</button>
+          <div class="flavor-nav-dots">
+            <span class="flavor-nav-dot" data-target="chapmanDetail" title="Chapman"></span>
+            <span class="flavor-nav-dot" data-target="obiDetail" title="Obi"></span>
+            <span class="flavor-nav-dot active" data-target="tamtamDetail" title="TamTam"></span>
+            <span class="flavor-nav-dot" data-target="zoboDetail" title="Zobo"></span>
+          </div>
+          <button class="flavor-nav-btn" data-dir="next" aria-label="Next drink">→</button>
+        </nav>
         </div>
         <div class="flavor-detail-content">
           <div class="flavor-detail-eyebrow">/03 — TAMTAM</div>
@@ -1932,9 +2025,21 @@
         <span>Back to drinks</span>
       </button>
       <div class="flavor-detail-grid">
-        <div class="flavor-detail-image">
+        <div class="flavor-image-col">
+          <div class="flavor-detail-image">
           <img src="Chapman.avif" alt="Chapman — Sparkling Spiced Citrus" />
           <div class="flavor-detail-image-tag">Chapman · Spiced Citrus</div>
+        </div>
+          <nav class="flavor-detail-nav" aria-label="Navigate drinks">
+          <button class="flavor-nav-btn" data-dir="prev" aria-label="Previous drink">←</button>
+          <div class="flavor-nav-dots">
+            <span class="flavor-nav-dot active" data-target="chapmanDetail" title="Chapman"></span>
+            <span class="flavor-nav-dot" data-target="obiDetail" title="Obi"></span>
+            <span class="flavor-nav-dot" data-target="tamtamDetail" title="TamTam"></span>
+            <span class="flavor-nav-dot" data-target="zoboDetail" title="Zobo"></span>
+          </div>
+          <button class="flavor-nav-btn" data-dir="next" aria-label="Next drink">→</button>
+        </nav>
         </div>
         <div class="flavor-detail-content">
           <div class="flavor-detail-eyebrow">/01 — CHAPMAN</div>
@@ -1956,9 +2061,21 @@
         <span>Back to drinks</span>
       </button>
       <div class="flavor-detail-grid">
-        <div class="flavor-detail-image">
+        <div class="flavor-image-col">
+          <div class="flavor-detail-image">
           <img src="obi%20promo.png" alt="Obi — Sparkling Kola Bitter" />
           <div class="flavor-detail-image-tag">Obì · Kola Bitter</div>
+        </div>
+          <nav class="flavor-detail-nav" aria-label="Navigate drinks">
+          <button class="flavor-nav-btn" data-dir="prev" aria-label="Previous drink">←</button>
+          <div class="flavor-nav-dots">
+            <span class="flavor-nav-dot" data-target="chapmanDetail" title="Chapman"></span>
+            <span class="flavor-nav-dot active" data-target="obiDetail" title="Obi"></span>
+            <span class="flavor-nav-dot" data-target="tamtamDetail" title="TamTam"></span>
+            <span class="flavor-nav-dot" data-target="zoboDetail" title="Zobo"></span>
+          </div>
+          <button class="flavor-nav-btn" data-dir="next" aria-label="Next drink">→</button>
+        </nav>
         </div>
         <div class="flavor-detail-content">
           <div class="flavor-detail-eyebrow">/02 — OBI</div>
@@ -1983,9 +2100,21 @@
         <span>Back to drinks</span>
       </button>
       <div class="flavor-detail-grid">
-        <div class="flavor-detail-image">
+        <div class="flavor-image-col">
+          <div class="flavor-detail-image">
           <img src="Zobo.avif" alt="Zobo — Sparkling Hibiscus + Ginger" />
           <div class="flavor-detail-image-tag">Zobo · Hibiscus + Ginger</div>
+        </div>
+          <nav class="flavor-detail-nav" aria-label="Navigate drinks">
+          <button class="flavor-nav-btn" data-dir="prev" aria-label="Previous drink">←</button>
+          <div class="flavor-nav-dots">
+            <span class="flavor-nav-dot" data-target="chapmanDetail" title="Chapman"></span>
+            <span class="flavor-nav-dot" data-target="obiDetail" title="Obi"></span>
+            <span class="flavor-nav-dot" data-target="tamtamDetail" title="TamTam"></span>
+            <span class="flavor-nav-dot active" data-target="zoboDetail" title="Zobo"></span>
+          </div>
+          <button class="flavor-nav-btn" data-dir="next" aria-label="Next drink">→</button>
+        </nav>
         </div>
         <div class="flavor-detail-content">
           <div class="flavor-detail-eyebrow">/04 — ZOBO</div>
@@ -2536,6 +2665,50 @@ function drawParticles(t) {
 }
 requestAnimationFrame(drawParticles);
 
+/* ---------- Cans-static label count-up (mobile/tablet) ---------- */
+(function () {
+  const stats = document.querySelectorAll('.cans-label-stat[data-count]');
+  if (!stats.length) return;
+
+  function animateStat(el) {
+    const target = parseInt(el.dataset.count, 10);
+    const from   = el.dataset.from !== undefined ? parseInt(el.dataset.from, 10) : 0;
+    const suffix = el.dataset.suffix || '';
+    const dur = 1400;
+    const startedAt = performance.now();
+    el.classList.add('counting');
+
+    function frame(now) {
+      const t = Math.min(1, (now - startedAt) / dur);
+      const eased = 1 - Math.pow(1 - t, 4); // easeOutQuart
+      const val = Math.round(from + (target - from) * eased);
+      el.textContent = val + suffix;
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        el.textContent = target + suffix;
+        setTimeout(() => el.classList.remove('counting'), 600);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Stagger each stat slightly
+        stats.forEach((el, i) => {
+          setTimeout(() => animateStat(el), i * 220);
+        });
+        io.disconnect(); // only animate once
+      }
+    });
+  }, { threshold: 0.4 });
+
+  const section = document.querySelector('.cans-static');
+  if (section) io.observe(section);
+})();
+
 /* Pause particles in reduced motion */
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   particlesRunning = false;
@@ -2667,12 +2840,60 @@ if (flavorsStage) {
 
   allBackButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      setStageToListHeight();           // shrink back to list height
+      setStageToListHeight();
       flavorsStage.classList.remove('show-detail');
       allPanels.forEach(p => {
         p.setAttribute('aria-hidden', 'true');
         setTimeout(() => p.classList.remove('active'), 800);
       });
+    });
+  });
+
+  /* ---- Prev / Next / Dot navigation between flavor panels ---- */
+  const flavorPanelOrder = ['chapmanDetail', 'obiDetail', 'tamtamDetail', 'zoboDetail'];
+
+  function navigateFlavor(targetId) {
+    const newPanel = document.getElementById(targetId);
+    if (!newPanel) return;
+    // Update stage height for the new panel
+    setStageToPanel(newPanel);
+    // Deactivate all, activate target
+    allPanels.forEach(p => {
+      p.classList.remove('active');
+      p.setAttribute('aria-hidden', 'true');
+    });
+    newPanel.classList.add('active');
+    newPanel.setAttribute('aria-hidden', 'false');
+    flavorsStage.classList.add('show-detail');
+    // Scroll flavors into view
+    const flavorsSection = document.getElementById('flavors');
+    if (flavorsSection) {
+      const top = flavorsSection.getBoundingClientRect().top + window.scrollY - 60;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+
+  // Wire prev/next buttons
+  document.querySelectorAll('.flavor-detail-nav .flavor-nav-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const panel = btn.closest('.flavor-detail-panel');
+      if (!panel) return;
+      const idx = flavorPanelOrder.indexOf(panel.id);
+      const dir = btn.dataset.dir;
+      const nextIdx = dir === 'next'
+        ? (idx + 1) % flavorPanelOrder.length
+        : (idx - 1 + flavorPanelOrder.length) % flavorPanelOrder.length;
+      navigateFlavor(flavorPanelOrder[nextIdx]);
+    });
+  });
+
+  // Wire dot clicks
+  document.querySelectorAll('.flavor-nav-dot').forEach(dot => {
+    dot.addEventListener('click', e => {
+      e.stopPropagation();
+      const target = dot.dataset.target;
+      if (target) navigateFlavor(target);
     });
   });
 }
