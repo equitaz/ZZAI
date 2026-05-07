@@ -1424,9 +1424,79 @@
 
     /* Scroll hint spacing — tablet */
     .scroll-hint { margin-top: 40px; }
-    /* Scroll animation — transparent bg so below-canvas area blends with sections */
-    .scroll-animation { height: 200vh; background: transparent; }
-    .scroll-animation-sticky { height: 100vh; }
+    /* Hide scroll animation on tablet, show static image instead */
+    .scroll-animation { display: none; }
+    .cans-static { display: block; }
+
+    /* Static cans section */
+    .cans-static {
+      position: relative;
+      width: 100%;
+      line-height: 0;
+    }
+    .cans-static img.cans-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    /* Label chips */
+    .cans-label {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 44%;
+    }
+    .cans-label-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .cans-label-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(14px, 3.2vw, 22px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .cans-label-title em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 700;
+      text-transform: none;
+    }
+    .cans-label-stat {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(20px, 5vw, 36px);
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .cans-label-stat-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      line-height: 1;
+    }
+    /* Position each label */
+    .cans-label-1 { top: 3%; left: 2%; }
+    .cans-label-2 { top: 3%; right: 2%; text-align: right; align-items: flex-end; }
+    .cans-label-3 {
+      bottom: 3%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      align-items: center;
+      max-width: 60%;
+    }
     .annotation {
       bottom: 4vh;
       width: calc(100% - 32px);
@@ -1495,9 +1565,12 @@
 
     /* Scroll hint spacing — mobile */
     .scroll-hint { margin-top: 32px; }
-    /* Scroll animation — transparent bg, shorter height for mobile */
-    .scroll-animation { height: 160vh; background: transparent; }
-    .scroll-animation-sticky { height: 100vh; }
+    /* Hide scroll animation on mobile too */
+    .scroll-animation { display: none; }
+    .cans-static { display: block; }
+    .cans-label-num { font-size: 8px; }
+    .cans-label-title { font-size: clamp(12px, 4vw, 18px); }
+    .cans-label-stat { font-size: clamp(18px, 6vw, 28px); }
     .annotation {
       bottom: 3vh;
       width: calc(100% - 16px);
@@ -1587,6 +1660,11 @@
     .footer-col h4 { font-size: 10px; }
     .footer-col a { font-size: 14px; }
     .footer-bottom { flex-direction: column; gap: 6px; font-size: 10px; padding-top: 20px; margin-top: 48px; }
+  }
+
+  /* ----- Static cans section (mobile/tablet only) ----- */
+  .cans-static {
+    display: none; /* hidden on desktop */
   }
 
   /* ============================================================
@@ -1720,6 +1798,35 @@
       <div class="annotation-stat-num">0</div>
       <div class="annotation-stat-label">Artificial anything</div>
     </div>
+  </div>
+</section>
+
+<!-- Static cans image — shown only on mobile/tablet instead of scroll animation -->
+<section class="cans-static">
+  <img class="cans-img" src="tablet%20and%20mobile.png" alt="ZZAI — four sparkling drinks" />
+
+  <!-- Label 1: top-left — Real cane sugar -->
+  <div class="cans-label cans-label-1">
+    <span class="cans-label-num">01 — Crafted</span>
+    <span class="cans-label-title">Real <em>cane</em> sugar</span>
+    <span class="cans-label-stat">100%</span>
+    <span class="cans-label-stat-text">Pure cane</span>
+  </div>
+
+  <!-- Label 2: top-right — Iconic flavors -->
+  <div class="cans-label cans-label-2">
+    <span class="cans-label-num">02 — Sourced</span>
+    <span class="cans-label-title">Iconic <em>flavors</em></span>
+    <span class="cans-label-stat">4</span>
+    <span class="cans-label-stat-text">Cultural roots</span>
+  </div>
+
+  <!-- Label 3: bottom-center — Sparkling, premium -->
+  <div class="cans-label cans-label-3">
+    <span class="cans-label-num">03 — Finished</span>
+    <span class="cans-label-title">Sparkling, <em>premium</em></span>
+    <span class="cans-label-stat">0</span>
+    <span class="cans-label-stat-text">Artificial anything</span>
   </div>
 </section>
 
