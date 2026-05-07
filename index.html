@@ -314,8 +314,8 @@
   }
 
   .scroll-hint {
-    margin-top: auto;
-    padding-bottom: 24px;
+    margin-top: 48px;
+    padding-bottom: 0;
     align-self: center;
     text-align: center;
     font-family: 'JetBrains Mono', monospace;
@@ -1415,15 +1415,18 @@
     .nav-cta { font-size: 13px; padding: 9px 16px; }
     .brand img { height: 32px; }
 
-    /* Hero */
-    .hero { padding: 100px 32px 56px; }
+    /* Hero — tablet: no min-height so no bottom cream gap */
+    .hero { padding: 100px 32px 56px; min-height: auto; }
     .hero-title { font-size: clamp(40px, 7.5vw, 120px); }
     .hero-subtitle { font-size: clamp(14px, 1.8vw, 17px); max-width: 480px; }
     .hero-cta-row { gap: 12px; margin-top: 36px; }
     .btn { font-size: 13px; padding: 13px 24px; }
 
-    /* Scroll animation */
-    .scroll-animation { height: 350vh; }
+    /* Scroll hint spacing — tablet */
+    .scroll-hint { margin-top: 40px; }
+    /* Scroll animation — transparent bg so below-canvas area blends with sections */
+    .scroll-animation { height: 200vh; background: transparent; }
+    .scroll-animation-sticky { height: 100vh; }
     .annotation {
       bottom: 4vh;
       width: calc(100% - 32px);
@@ -1478,7 +1481,7 @@
     .nav-cta { font-size: 12px; padding: 8px 14px; }
 
     /* Hero */
-    .hero { padding: 90px 16px 48px; min-height: 100svh; }
+    .hero { padding: 90px 16px 48px; min-height: auto; }
     .hero-eyebrow { font-size: 9px; letter-spacing: 0.2em; }
     .hero-title { font-size: clamp(36px, 10vw, 72px); line-height: 0.95; }
     .hero-subtitle { font-size: 14px; max-width: 100%; margin-top: 20px; }
@@ -1490,8 +1493,11 @@
     .orb-1 { width: 280px; height: 280px; }
     .orb-2 { width: 220px; height: 220px; }
 
-    /* Scroll animation */
-    .scroll-animation { height: 260vh; }
+    /* Scroll hint spacing — mobile */
+    .scroll-hint { margin-top: 32px; }
+    /* Scroll animation — transparent bg, shorter height for mobile */
+    .scroll-animation { height: 160vh; background: transparent; }
+    .scroll-animation-sticky { height: 100vh; }
     .annotation {
       bottom: 3vh;
       width: calc(100% - 16px);
@@ -1593,7 +1599,7 @@
     .nav-cta { display: none; } /* hide shop button on tiny screens */
 
     /* Hero */
-    .hero { padding: 80px 14px 44px; }
+    .hero { padding: 80px 14px 44px; min-height: auto; }
     .hero-title { font-size: clamp(32px, 11vw, 56px); }
     .hero-eyebrow { display: none; } /* too cramped on tiny screens */
     .hero-subtitle { font-size: 13px; }
@@ -1671,7 +1677,7 @@
   <div class="grid-overlay"></div>
 
   <div class="hero-eyebrow">West Africa · Sparkling</div>
-  <h1 class="hero-title">Rooted&nbsp;in<br/><em>culture</em>.<br/>Made&nbsp;to&nbsp;be&nbsp;enjoyed.</h1>
+  <h1 class="hero-title">Rooted&nbsp;in<br/><em>culture</em>.<br/>Made&nbsp;to&nbsp;be<br/>enjoyed.</h1>
   <p class="hero-subtitle">ZZAI brings West Africa's most iconic flavors into a sparkling format that feels modern, premium, and deeply rooted. Real cane sugar. No artificial anything.</p>
   <div class="hero-cta-row">
     <a href="#flavors" class="btn btn-primary">Discover the four <span style="font-family:'JetBrains Mono',monospace;font-size:12px">→</span></a>
